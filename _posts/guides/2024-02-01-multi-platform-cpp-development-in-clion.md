@@ -1,13 +1,15 @@
 ---
 layout: post
-title: Multiplatform C++ development in CLion
+title: Multi-platform C++ development in CLion
 subtitle: How to set up CLion to handle Linux, macOS, and Windows development in a single project
-gh-repo: reenignearcher/reenignearcher.github.io
-gh-badge: [follow]
-tags: [clion, c++, cpp, cmake, linux, macos, windows]
-thumbnail-img: /assets/img/banners/clion.png
+gh-repo: ReenigneArcher/reenignearcher.github.io
+gh-badge: [follow, star]
+readtime: true
+tags: [clion, c++, cpp, cmake, dev, guide, linux, macos, windows]
+thumbnail-img: /assets/img/thumbnails/clion.png
 comments: true
-author: ReenigneArcher
+authors:
+  - github: ReenigneArcher
 ---
 
 ## Introduction
@@ -16,7 +18,7 @@ develop, inspect, and test your code. This is especially true when you are worki
 
 Without the proper setup, you may find your IDE complaining about missing headers, libraries, etc.
 
-![CLion Linux without remote build](../assets/img/posts/2024-02-01-clion-linux-without-remote-build.png)
+![CLion Linux without remote build](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/linux-without-remote-build.png)
 
 This example shows 975 problems in this single file.
 
@@ -37,9 +39,9 @@ and from a single system.
 
    ```Dockerfile
    FROM ubuntu:22.04
-   
+
    RUN DEBIAN_FRONTEND="noninteractive" apt-get update && apt-get -y install tzdata
-   
+
    RUN apt-get update \
      && apt-get install -y build-essential \
          gcc \
@@ -64,14 +66,14 @@ and from a single system.
 
 2. Right-click on the `Dockerfile` and select `Modify Run Configuration`.
 
-   ![CLion Docker Modify Run Configuration](../assets/img/posts/2024-02-01-clion-docker-run-config.png)
+   ![CLion Docker Modify Run Configuration](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/docker-run-config.png)
 
 3. Set an image tag and container name. Optionally, enable BuildKit and set a context folder, depending on the content
    of your `Dockerfile`.
 
 4. Right-click on the `Dockerfile` and select `Run '<name of your Dockerfile>'`.
 
-   ![CLion Docker Run](../assets/img/posts/2024-02-01-clion-run-docker.png)
+   ![CLion Docker Run](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/run-docker.png)
 
 ### WSL
 
@@ -96,7 +98,7 @@ more complicated. Therefore, I've decided to leave a link to the guide I used on
 1. Open CLion and go to `File` -> `Settings` -> `Tools` -> `SSH Configurations`.
 2. Click the `+` button and add the SSH configurations for the remote environment(s).
 
-   ![CLion SSH Configurations](../assets/img/posts/2024-02-01-clion-ssh-configuration.png)
+   ![CLion SSH Configurations](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/ssh-configuration.png)
 
 ### Adding toolchains
 
@@ -105,15 +107,15 @@ more complicated. Therefore, I've decided to leave a link to the guide I used on
 
 #### Docker
 
-![CLion Docker Toolchain](../assets/img/posts/2024-02-01-clion-toolchain-docker.png)
+![CLion Docker Toolchain](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/toolchain-docker.png)
 
 #### WSL
 
-![CLion WSL Toolchain](../assets/img/posts/2024-02-01-clion-toolchain-wsl.png)
+![CLion WSL Toolchain](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/toolchain-wsl.png)
 
 #### SSH
 
-![CLion SSH Toolchain](../assets/img/posts/2024-02-01-clion-toolchain-ssh.png)
+![CLion SSH Toolchain](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/toolchain-ssh.png)
 
 
 ### Adding CMake profiles
@@ -121,7 +123,7 @@ more complicated. Therefore, I've decided to leave a link to the guide I used on
 1. Open CLion and go to `File` -> `Settings` -> `Build, Execution, Deployment` -> `CMake`.
 2. Click the `+` button and select the CMake profile you want to add.
 
-   ![CLion CMake Profile](../assets/img/posts/2024-02-01-clion-cmake-profiles.png)
+   ![CLion CMake Profile](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/cmake-profiles.png)
 
 ## Update project
 
@@ -129,12 +131,12 @@ The last step is to reload the project.
 
 1. Open the CMake tab and click the reload button.
 
-   ![CLion Reload Project](../assets/img/posts/2024-02-01-clion-reload-cmake.png)
+   ![CLion Reload Project](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/reload-cmake.png)
 
 Depending on the project and remote environment(s), this may take some time. However, once it is finished, you should
 be able to build, run, and debug your project on all the remote environments simultaneously.
 
-![CLion Linux without remote build](../assets/img/posts/2024-02-01-clion-linux-with-remote-build.png)
+![CLion Linux without remote build](../assets/img/posts/2024-02-01-multi-platform-cpp-development-in-clion/linux-with-remote-build.png)
 
 The number of problems detected by CLion was reduced from 975 to 367.
 

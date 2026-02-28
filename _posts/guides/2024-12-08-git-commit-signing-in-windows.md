@@ -2,11 +2,13 @@
 layout: post
 title: Signing Git Commits in Windows
 subtitle: How to sign your Git commits in Windows using GPG and Kleopatra
-gh-repo: reenignearcher/reenignearcher.github.io
-gh-badge: [follow]
-tags: [git, github, windows]
+gh-repo: ReenigneArcher/reenignearcher.github.io
+gh-badge: [follow, star]
+readtime: true
+tags: [dev, git, github, guide, windows]
 comments: true
-author: ReenigneArcher
+authors:
+  - github: ReenigneArcher
 ---
 
 ## Introduction
@@ -19,8 +21,8 @@ This post will show you how to sign your Git commits in Windows using GPG and Kl
 ## Create new OpenPGP certificate
 1. Open Kleopatra and select "New Key Pair"
 
-   ![New Key Pair](../assets/img/posts/git-commit-signing-in-windows/new-key-pair.png)
- 
+   ![New Key Pair](/assets/img/posts/2024-12-08-git-commit-signing-in-windows/new-key-pair.png)
+
 2. Enter your GitHub username and email. The email must be one you have assigned to your GitHub account.
    You can find your no-reply email https://github.com/settings/emails on this page if you have one set.
 3. Optionally, expand "Advanced Options" and change the "Key Material" option. I used "rsa4096".
@@ -122,7 +124,7 @@ This approach will allow previously verified commits to remain verified.
   and edit each commit to adjust. Finally, when you amend the commit do so with the following command.
 
   ```bash
-  git commit --amend --date=now --no-edit 
+  git commit --amend --date=now --no-edit
   ```
 
 ## Conclusion
