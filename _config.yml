@@ -1,21 +1,22 @@
 ---
 # See https://github.com/LizardByte/beautiful-jekyll-next/blob/master/_config.yml for documented options
 
-remote_theme: LizardByte/beautiful-jekyll-next@74d882a18fac005f9735ec7f8a3053d1c3beee3a
+remote_theme: LizardByte/beautiful-jekyll-next@6f1173d7e8d0e0fee5a700d168e8878b9eb4948b
 
-title: ReenigneArcher's Blog
+title: ReenigneArcher
 author: ReenigneArcher
 
 amazon_products:
   enabled: true
-  affiliate_tag: 'lizardbyte-blog-20'
+  affiliate_tag: 'lizardbyte-blog-01-20'
 
 navbar-links:
   About Me: "aboutme"
+  Blog: "blog"
   Sample Sites:
     - LizardByte: "https://lizardbyte.github.io"
-    - Game DB: "https://lizardbyte.github.io/GameDB"
-    - Themerr DB: "https://lizardbyte.github.io/ThemerrDB"
+    - GameDB: "https://lizardbyte.github.io/GameDB"
+    - ThemerrDB: "https://lizardbyte.github.io/ThemerrDB"
     - Corner Brew: "https://tompkinsliving.github.io/corner-brew"
   Tag Index: "tags"
   ❤ Support:
@@ -50,6 +51,8 @@ post_search: true
 edit_page_button: true
 navbar-var-length: true
 keywords: "ReenigneArcher,LizardByte,Sunshine,RetroArcher,blog,programming,open-source"
+site-css:
+  - "/assets/css/styles.css"
 
 # Light theme colors
 page-col: "#f5f5f5"
@@ -116,6 +119,8 @@ defaults:
       layout: "post"
       comments: true  # add comments to all blog posts
       social-share: true  # add social media sharing buttons to all blog posts
+      css:
+        - "/assets/css/show-search.css"
   -
     scope:
       path: ""  # any file that's not a post will be a "page" layout by default

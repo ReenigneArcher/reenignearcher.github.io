@@ -1,0 +1,78 @@
+/* Theme-specific variables */
+:root {
+  /* Light theme element colors */
+  --pagination-bg: #e9ecef;
+  --pagination-text: #495057;
+}
+
+[data-bs-theme="dark"] {
+  /* Dark theme element colors */
+  --pagination-bg: #111111;
+  --pagination-text: #e4e4e4;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.avatar-img {
+    background-color: var(--navbar-col);
+    border: .05rem;
+    border-color: var(--navbar-border-col);
+    border-style: solid;
+}
+
+/* in line code */
+code {
+  color: var(--mid-col);
+  background-color: var(--navbar-col);
+}
+
+/* page navigation buttons */
+.pagination .page-item .page-link {
+  background-color: var(--pagination-bg);
+  color: var(--pagination-text);
+}
+
+/* shrink logo when navbar shrinks, instead of hiding it */
+.navbar-custom.top-nav-short .avatar-container {
+  width: 3.125rem;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+}
+
+/* hide search button */
+#nav-search-link {
+  display: none;
+}
+
+/* code blocks */
+.highlight {
+  border-radius: 0.5rem;
+}
+.highlight > pre {
+  border-left: 0.4375rem solid var(--text-col);
+}
+.highlight pre.lineno {
+  border-right: 2px solid var(--text-col);
+}
+
+/* Override Bootstrap's text-muted to use theme colors */
+.text-muted {
+  color: var(--footer-text-col) !important;
+}
+
+/* Theme-aware outline button: dark border/text in light mode, light in dark mode */
+.btn-outline-theme {
+  --bs-btn-color: var(--text-col);
+  --bs-btn-border-color: var(--text-col);
+  --bs-btn-hover-color: var(--page-col);
+  --bs-btn-hover-bg: var(--text-col);
+  --bs-btn-hover-border-color: var(--text-col);
+  --bs-btn-active-color: var(--page-col);
+  --bs-btn-active-bg: var(--text-col);
+  --bs-btn-active-border-color: var(--text-col);
+}
