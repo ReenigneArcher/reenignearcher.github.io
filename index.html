@@ -1,4 +1,172 @@
 ---
-layout: home
+layout: landing
 title: ReenigneArcher
+subtitle: Open-source developer building practical tools for self-hosting, game streaming, and developer workflows.
+css:
+  - "/assets/css/landing.css"
 ---
+
+<main class="landing-page">
+  <section class="landing-hero" aria-labelledby="landing-title">
+    <div class="landing-avatar-wrap">
+      <img
+        class="landing-avatar"
+        src="{{ site.avatar | relative_url }}"
+        alt="ReenigneArcher"
+      >
+    </div>
+
+    <div class="landing-intro">
+      <p class="landing-eyebrow">Developer <span aria-hidden="true">·</span> Maintainer</p>
+      <h1 id="landing-title">ReenigneArcher</h1>
+      <p>
+        Open-source developer building practical tools for self-hosting, game streaming,
+        and developer workflows.
+      </p>
+    </div>
+
+    <div class="landing-actions" aria-label="Featured destinations">
+      <a class="btn btn-primary" href="https://github.com/ReenigneArcher">View GitHub</a>
+      <a class="btn btn-outline-theme" href="{{ '/blog' | relative_url }}">Read the blog</a>
+    </div>
+  </section>
+
+  <section class="landing-highlights" aria-label="Highlights">
+    <div class="landing-highlight-stack">
+      <section class="landing-highlight-section" id="projects" aria-labelledby="landing-projects-title">
+        <div class="landing-panel-heading">
+          <div class="landing-section-copy">
+            <h2 id="landing-projects-title">Pinned projects</h2>
+            <p>Open-source projects I’m currently highlighting.</p>
+          </div>
+          <div class="landing-panel-links">
+            <a href="https://app.lizardbyte.dev/#projects">LizardByte projects <span aria-hidden="true">→</span></a>
+            <a href="https://github.com/ReenigneArcher?tab=repositories">Personal projects <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div class="landing-highlight-panel">
+          <div
+            class="landing-project-list"
+            data-pinned-projects-url="https://raw.githubusercontent.com/ReenigneArcher/ReenigneArcher.github.io/dist/pinned-projects.json"
+            aria-live="polite"
+          >
+            <p class="landing-project-status">Loading pinned projects…</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="landing-highlight-section" aria-labelledby="landing-posts-title">
+        <div class="landing-panel-heading">
+          <div class="landing-section-copy">
+            <h2 id="landing-posts-title">Latest posts</h2>
+            <p>Recent updates from the blog.</p>
+          </div>
+          <div class="landing-panel-links">
+            <a href="{{ '/blog' | relative_url }}">All posts <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div class="landing-highlight-panel">
+          <div class="landing-post-list">
+            {% for post in site.posts limit: 5 %}
+              <a class="landing-post" href="{{ post.url | relative_url }}">
+                <time class="landing-post-date" datetime="{{ post.date | date_to_xmlschema }}">
+                  {{ post.date | date: site.date_format }}
+                </time>
+                <strong>{{ post.title | escape }}</strong>
+                <span class="landing-row-arrow" aria-hidden="true">→</span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<script>
+  (() => {
+    const projectList = document.querySelector("[data-pinned-projects-url]");
+
+    if (!projectList) {
+      return;
+    }
+
+    const showProjectStatus = (message, isWarning = false) => {
+      const status = document.createElement("p");
+      status.className = "landing-project-status";
+
+      if (isWarning) {
+        status.classList.add("landing-project-status--warning");
+      }
+
+      status.textContent = message;
+      projectList.replaceChildren(status);
+    };
+
+    const createProjectLink = (project) => {
+      if (!project || typeof project.name !== "string" || typeof project.url !== "string") {
+        return null;
+      }
+
+      let projectUrl;
+
+      try {
+        projectUrl = new URL(project.url);
+      } catch {
+        return null;
+      }
+
+      if (projectUrl.protocol !== "https:" || projectUrl.hostname !== "github.com") {
+        return null;
+      }
+
+      const link = document.createElement("a");
+      const name = document.createElement("strong");
+      const description = document.createElement("span");
+
+      link.className = "landing-project";
+      link.href = projectUrl.href;
+      name.textContent = project.name;
+      description.textContent = typeof project.description === "string" && project.description
+        ? project.description
+        : typeof project.nameWithOwner === "string"
+          ? project.nameWithOwner
+          : "GitHub repository";
+
+      link.append(name, description);
+      return link;
+    };
+
+    fetch(projectList.dataset.pinnedProjectsUrl, { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Pinned projects request failed with status ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (!data || !Array.isArray(data.projects)) {
+          throw new Error("Pinned projects response is invalid");
+        }
+
+        const projects = data.projects.map(createProjectLink).filter(Boolean);
+
+        if (projects.length !== data.projects.length) {
+          throw new Error("Pinned projects response contains an invalid project");
+        }
+
+        if (projects.length === 0) {
+          showProjectStatus("No pinned projects right now.");
+          return;
+        }
+
+        projectList.replaceChildren(...projects);
+      })
+      .catch(() => {
+        showProjectStatus("Pinned projects are temporarily unavailable.", true);
+      });
+  })();
+</script>

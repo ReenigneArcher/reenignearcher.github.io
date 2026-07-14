@@ -1,0 +1,73 @@
+name: Update pinned projects
+
+on:
+  schedule:
+    - cron: "17 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-pinned-projects
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - name: Get pinned projects
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api graphql \
+            -f query='query {
+              user(login: "ReenigneArcher") {
+                pinnedItems(first: 6, types: REPOSITORY) {
+                  nodes {
+                    ... on Repository {
+                      name
+                      nameWithOwner
+                      url
+                      description
+                    }
+                  }
+                }
+              }
+            }' \
+            --jq '{projects: [.data.user.pinnedItems.nodes[] | {
+              name,
+              nameWithOwner,
+              url,
+              description
+            }]}' > "${RUNNER_TEMP}/pinned-projects.json"
+
+          jq -e '.projects | type == "array" and length <= 6' "${RUNNER_TEMP}/pinned-projects.json"
+
+      - name: Publish project data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin dist; then
+            git fetch origin dist:dist
+            git switch dist
+          else
+            git switch --orphan dist
+          fi
+
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp "${RUNNER_TEMP}/pinned-projects.json" pinned-projects.json
+          git add --all
+
+          if git diff --cached --quiet; then
+            echo "Pinned projects have not changed."
+            exit 0
+          fi
+
+          git commit -m "Update pinned projects"
+          git push origin dist
